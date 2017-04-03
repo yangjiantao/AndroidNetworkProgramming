@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.jiantao.androidsocketchat">
+    package="com.medlinker.androidsocketchat">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.intent.permission.im.receiver_permission" />
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
