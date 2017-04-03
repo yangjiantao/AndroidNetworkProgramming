@@ -9,15 +9,18 @@
 
 - Android IPC
 - socket 重连机制
+- 消息回执
 - 线程池
 - Java 服务器 / android client
 
+
 ### Todo-list
 
+- protocolbuf 自定义消息协议 [参考](http://blog.csdn.net/briblue/article/details/53187780)
 - 心跳策略
 - 弱网处理
-- 代码优化
+- 代码优化完善
 - ...
 
 ### Thanks
-
+all my friends
