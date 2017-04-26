@@ -17,6 +17,9 @@ public class ServerSocketHelper {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(6666);
+            String hostAddress = serverSocket.getInetAddress().getHostAddress();
+            String hostName = serverSocket.getInetAddress().getHostName();
+            System.out.println("hostAddress = "+hostAddress+"; hostName = "+hostName);
         } catch (IOException e) {
             e.printStackTrace();
             serverSocket = null;
@@ -28,6 +31,7 @@ public class ServerSocketHelper {
         while(true){
             Socket socket=null;
             try{
+                System.out.println(" serverSocket waiting accept ...");
                 socket=serverSocket.accept();                        //主线程获取客户端连接
                 Thread workThread=new Thread(new SocketHandler(socket));    //创建线程
                 workThread.start();                                    //启动线程

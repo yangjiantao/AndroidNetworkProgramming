@@ -95,11 +95,6 @@ class TcpClient implements IClient {
         LogUtil.i(TAG, " receiveData ing isConnect = %b  ", isConnected());
         while (isConnected()) {
             try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
                 int type = dataIS.readByte();//读取1位
                 int length = dataIS.readChar();//读取2位标记第三段数据长度
                 byte[] data = new byte[length];
@@ -109,7 +104,7 @@ class TcpClient implements IClient {
             } catch (SocketTimeoutException e) {
                 LogUtil.e(TAG, " receiveData SocketTimeoutException = " + e.getMessage());
                 e.printStackTrace();
-//                break;
+                break;
             } catch (IOException e) {
                 LogUtil.e(TAG, " receiveData IOException = " + e.getMessage());
                 e.printStackTrace();
