@@ -1,23 +1,27 @@
-## socket client 消息通信
+## android socket client 实现
+
 
 ### 目录
-- socket 简介
-- 创建连接
-- 接收消息
-- 发送消息
-- 断开连接
-- 进度灰色保活
-- IPC
-- 自定义权限广播
-- 重试机制
-- 进程异常恢复
+
+- [socket 简介](#socket_intro)
+- [创建连接](#create)
+- [接收消息](#receive_msg)
+- [发送消息](#send_msg)
+- [断开连接](#disconnect)
+- [进度灰色保活](#gray_service)
+- [IPC](#ipc)
+- [自定义权限广播](#custom_broadcast)
+- [重试机制](#retry)
+- [进程异常恢复](#catch_crash)
 
 前段时间公司项目有个大版本准备对IM（消息通信）模块升级。虽然需求紧急但server同事任坚持自定义消息协议来实现一套通信框架。这里对Android端实现做下总结，仅供交流。
 
-### socket 简介
+
+<h3 id="socket_intro">socket 简介</h3>
 >socket就是我们常说的套接字。网络上具有唯一标识的IP地址和端口组合在一起才能构成唯一能识别的标识符套接字。根据不同的的底层协议，Socket的实现是多样化的。常见的Socket类型为流套接字（streamsocket）和数据报套接字(datagramsocket)；数据报套接字使用UDP协议，提供数据打包发送服务。流套接字将TCP作为其端对端协议，提供了一个可信赖的字节流服务。
 
-### 创建连接
+
+<h3 id="create">创建连接</h3>
 
 这里给出一个简单通信模型，图片来源于网络。
 ![01](../art/tcp_socket_txmx.jpg)
@@ -58,7 +62,8 @@ try {
 
 ```
 
-### 接收消息
+
+<h3 id="receive_msg">接收消息</h3>
 
 创建成功后就开始接收处理消息。
 
@@ -85,7 +90,8 @@ while (isConnected()) {
         //通知异常，并重连。
 ```
 
-### 发送消息
+<h3 id="send_msg">发送消息</h3>
+
 在连接状态下向服务器发送字节流消息。
 
 ```
@@ -113,7 +119,8 @@ synchronized (TcpClient.class) {
         }
 ```
 
-### 断开连接
+<h3 id="disconnect">断开连接</h3>
+
 ```
 //关闭流
 		closeInputStream(dataIS);
@@ -134,7 +141,9 @@ synchronized (TcpClient.class) {
         mState = STATE_DISCONNECT;
 ```
 
-### 进度灰色保活
+
+<h3 id="gray_service">进度灰色保活</h3>
+
 由于项目中通信模块运行在独立的进程中，为避免进程被意外干掉，这里将其优先级提高已达到报活效果。
 
 ```
@@ -173,11 +182,14 @@ if (Build.VERSION.SDK_INT < 18) {//18以下，可直接设置为前台service
 ```
 代码中可以看出，启动一个相同id的前台GrayInnerService然后立即stopSelf，再以同样方式启动主service，这样运行起来的service就已经是达到前台服务优先级了，一般情况都杀不了它。
 
-### IPC
+
+<h3 id="ipc">IPC</h3>
 
 这里IPC比较简单，就是使用bundle实现service到broadcast之间的跨进程通信。此处略过，详细请查看代码。
 
-### 自定义广播权限
+
+<h3 id="custom_broadcast">自定义广播权限</h3>
+
 > 出于安全考虑或者其它特殊需求，可能会限制广播接收者，所以这里就用到了自定义权限。
 
 - manifest.xml中定义并使用
@@ -197,10 +209,13 @@ contexts.sendBroadcast(intent, "android.intent.permission.im.receiver_permission
 ```
 这样只有申明了此权限的广播才能接收到消息。
 
-### 重试机制
+
+<h3 id="retry">重试机制</h3>
+
 这里参考volley框架的重试机制，在创建连接时若失败5次之内会尝试重连。具体实现请参考DefaultRetryPolicy类。
 
-### 进程异常恢复
+
+<h3 id="catch_crash">进程异常恢复</h3>
 
 实现Thread.UncaughtExceptionHandler接口，处理异常并恢复。
 
@@ -224,6 +239,16 @@ contexts.sendBroadcast(intent, "android.intent.permission.im.receiver_permission
     }
 ```
 
+### TODO
+
+- 弱网情况。
+- 连接异常断开，如何恢复。
+- 健壮的心跳策略。
+- ...
+
 ### 参考
 
-
+- [关于service的一切](http://blog.csdn.net/guolin_blog/article/details/11952435/)
+- [进程保活](http://geek.csdn.net/news/detail/68515)
+- [基于Android的socket通信](http://blog.csdn.net/maoxiao1229/article/details/22886337)
+- [官方api等资料]()
