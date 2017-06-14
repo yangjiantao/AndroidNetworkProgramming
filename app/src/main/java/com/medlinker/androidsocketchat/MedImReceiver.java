@@ -29,7 +29,7 @@ public class MedImReceiver extends ImBaseReceiver {
                 // socket连接完成
                 break;
 
-            case Constants.LOCAL_MSG_DISCONNECT:
+            case Constants.LOCAL_MSG_DISCONNECTED:
             case Constants.LOCAL_MSG_CONNECT_FAILED:
                 //内部连接失败，或者通知断开连接，这里统一重连
                 //延迟5s重连 , 这里不判断网络状态，就不用监听网络变化。
@@ -40,7 +40,7 @@ public class MedImReceiver extends ImBaseReceiver {
 //                            public void call(Long aLong) {
 //                            }
 //                        });
-                                ImManager.init(context,-1);
+//                                ImManager.init(context,-1);
                 break;
         }
     }

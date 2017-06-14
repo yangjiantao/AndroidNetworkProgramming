@@ -47,7 +47,7 @@ public class ImService extends Service {
 
             @Override
             public void onDisconnect() {
-                ImMessageDispatcher.broadLocalMessage(getBaseContext(), Constants.LOCAL_MSG_DISCONNECT);
+                ImMessageDispatcher.broadLocalMessage(getBaseContext(), Constants.LOCAL_MSG_DISCONNECTED);
             }
 
             @Override
@@ -123,7 +123,7 @@ public class ImService extends Service {
                 break;
 
             case Constants.OP_TYPE_DISCONNECT:
-
+                mStartSocketId = -1;
                 AsyncTaskExecutor.execute(RunnablePool.obtain(mRunnableExecutorImpl, Constants.OP_TYPE_DISCONNECT));
                 break;
 

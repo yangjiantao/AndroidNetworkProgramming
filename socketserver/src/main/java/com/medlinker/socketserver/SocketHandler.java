@@ -26,6 +26,7 @@ class SocketHandler implements Runnable{
             Thread.sleep(5000);
             startHeartbeat();
             receiveMessage(socket.getInputStream());
+w
         }catch(Exception e){e.printStackTrace();}finally{
             try{
                 System.out.println("关闭连接:"+socket.getInetAddress()+":"+socket.getPort());
@@ -73,11 +74,11 @@ class SocketHandler implements Runnable{
     private void receiveMessage(InputStream inputStream) {
         final DataInputStream dataInputStream = new DataInputStream(inputStream);
         while(isConnected()){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             try {
                 // 数据结构：第一位为数据类型，紧接着后两位为数据payload长度，后面为payload
                 int type = dataInputStream.readByte();//读取1位

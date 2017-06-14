@@ -83,9 +83,7 @@ class TcpClient implements IClient {
             LogUtil.e(TAG, " connect IOException = " + e.getMessage());
             mCallback.onConnectFailed(e);
         }
-        if (!connectState) {
-            disConnect(true);
-        } else {
+        if (connectState) {
             receiveData();
         }
     }
@@ -111,21 +109,24 @@ class TcpClient implements IClient {
                 break;
             }
         }
-        disConnect(true);
+        disConnect(mState != STATE_DISCONNECT);
     }
 
     @Override
-    public void disConnect(boolean needRec) {
-        closeInputStream(dataIS);
-        closeOutputStream(dataOS);
+    public synchronized void disConnect(boolean needRec) {
+        LogUtil.d(TAG, " disConnect needRec = %b", needRec);
         if (mSocket != null) {
-            try {
-                mSocket.shutdownInput();
-                mSocket.shutdownOutput();
-                mSocket.close();
-                mSocket = null;
-            } catch (Exception e) {
-                e.printStackTrace();
+            closeInputStream(dataIS);
+            closeOutputStream(dataOS);
+            if (mSocket != null) {
+                try {
+                    mSocket.shutdownInput();
+                    mSocket.shutdownOutput();
+                    mSocket.close();
+                    mSocket = null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         if (mCallback != null && needRec) {

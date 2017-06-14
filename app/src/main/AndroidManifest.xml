@@ -5,10 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <permission
-        android:name="android.intent.permission.im.receiver_permission"
+        android:name="android.intent.permission.socketclient.test.im.receiver_permission"
         android:protectionLevel="normal" />
 
-    <uses-permission android:name="android.intent.permission.im.receiver_permission" />
+    <uses-permission android:name="android.intent.permission.socketclient.test.im.receiver_permission" />
     <application
         android:name=".App"
         android:allowBackup="true"

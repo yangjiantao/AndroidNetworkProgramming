@@ -15,7 +15,7 @@ public class Constants {
     /**
      * 自定义权限
      */
-    public static final String RECEIVER_PERMISSION = "android.intent.permission.im.receiver_permission";
+    public static final String RECEIVER_PERMISSION = "android.intent.permission.socketclient.test.im.receiver_permission";
 
     /**
      * LOG 前缀
@@ -92,6 +92,6 @@ public class Constants {
 
 
     public static final int LOCAL_MSG_CONNECT = 30;
-    public static final int LOCAL_MSG_DISCONNECT = 31;
+    public static final int LOCAL_MSG_DISCONNECTED = 31;
     public static final int LOCAL_MSG_CONNECT_FAILED = 32;
 }
