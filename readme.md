@@ -11,11 +11,13 @@
 - Java 服务器 module
 
 
-### Todo-list
+### 补充
 
 - protobuf 自定义消息协议 [参考](http://blog.csdn.net/briblue/article/details/53187780)
-- 代码优化完善
-- ...
+
+  建议使用protobuf协议，二进制传输，体积小，效率高，支持大部分主流开发语言。
+
+-
 
 ### Thanks
 all my friends

@@ -3,19 +3,19 @@
 
 ### 目录
 
-- [socket 简介](#socket_intro)
-- [创建连接](#create)
-- [接收消息](#receive_msg)
-- [发送消息](#send_msg)
-- [断开连接](#disconnect)
-- [进度灰色保活](#gray_service)
-- [IPC](#ipc)
-- [自定义权限广播](#custom_broadcast)
-- [重试机制](#retry)
-- [进程异常恢复](#catch_crash)
+**目录 (Table of Contents)**
+
+[TOCM]
+
+[TOC]
+
+
+### h1
 
 前段时间公司项目有个大版本准备对IM（消息通信）模块升级。虽然需求紧急但server同事任坚持自定义消息协议来实现一套通信框架。这里对Android端实现做下总结，仅供交流。
 
+
+### h3
 
 <h3 id="socket_intro">socket 简介</h3>
 >socket就是我们常说的套接字。网络上具有唯一标识的IP地址和端口组合在一起才能构成唯一能识别的标识符套接字。根据不同的的底层协议，Socket的实现是多样化的。常见的Socket类型为流套接字（streamsocket）和数据报套接字(datagramsocket)；数据报套接字使用UDP协议，提供数据打包发送服务。流套接字将TCP作为其端对端协议，提供了一个可信赖的字节流服务。
@@ -239,12 +239,20 @@ contexts.sendBroadcast(intent, "android.intent.permission.im.receiver_permission
     }
 ```
 
-### TODO
+### 补充
 
 - 弱网情况。
+   目前弱网情况未做处理，超时异常会捕获，然后进入重连机制。
+   给个处理建议：将所有未发送成功的请求缓存到队列，待网络恢复后自动发送。
 - 连接异常断开，如何恢复。
+   除了上面提到了链接重试，及进程异常恢复；代码中捕获了任何socket异常，并进入重连机制。
 - 健壮的心跳策略。
-- ...
+心跳策略最好是双向的，及服务器和客户端都应有心跳。
+由于demo代码这块没完善，这里简单说下实现思路： **空闲状态，每三分钟发送一个心跳包。**
+    server每三分钟发一次心跳"ping"到client，client收到后回发一
+    个"pong"给server，这就完成了一次心跳检测。但如果在这三分钟之
+    内收到client发来的数据，则证明长连接处于正常状态，需要重新记
+    时三分钟再发送心跳。 **client处理策略可以和server一致。**
 
 ### 参考
 
