@@ -26,7 +26,7 @@ class SocketHandler implements Runnable{
             Thread.sleep(5000);
             startHeartbeat();
             receiveMessage(socket.getInputStream());
-w
+
         }catch(Exception e){e.printStackTrace();}finally{
             try{
                 System.out.println("关闭连接:"+socket.getInetAddress()+":"+socket.getPort());

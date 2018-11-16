@@ -23,11 +23,11 @@ public class ImManager {
     /**
      * 初始化，创建socket连接。
      */
-    public static void init(Context context, long startId) {
+    public static void init(Context context, long startId, String hostName, int port) {
         LogUtil.d(TAG, " initIM ");
-        String ip = "127.0.0.1";
-        int port = 6666;
-        ImServiceHelper.getInstance(context).connect(startId <= 0 ? DEFAULT_START_ID : startId, ip, port);
+//        String ip = "192.168.137.53";
+//        int port = 8888;
+        ImServiceHelper.getInstance(context).connect(startId <= 0 ? DEFAULT_START_ID : startId, hostName, port);
     }
 
     /**
