@@ -1,23 +1,11 @@
-## AndroidSocketChat
-> 基于TCP Socket实现数据通信。 此项目主要是安卓端通过socket与服务器通信，为配合测试，写了简单的socketserver服务器代码。
+## AndroidNetworkProgramming
+> Android网络编程实战总结，涉及HTTP、TCP、UDP常用协议。
 
-### 部分log日志截图
-
-![01](./art/log1.png)
-
-### Features
-
-- [Android Client 实现](./socketclient/readme.md)
-- Java 服务器 module
-
-
-### 补充
-
-- protobuf 自定义消息协议 [参考](http://blog.csdn.net/briblue/article/details/53187780)
-
-  建议使用protobuf协议，二进制传输，体积小，效率高，支持大部分主流开发语言。
-
--
+### 内容规划
+- Http： Server端介绍NanoHttpd开源库的设计和实现，Client端常用三方库推荐。
+- TCP：对即时通信App开发总结，分享优化方案。（这里偏Client端）
+- UDP：实际项目经验总结。
+- demo：具有参考价值的代码及demo。
 
 ### Thanks
-all my friends
+all my friends.
