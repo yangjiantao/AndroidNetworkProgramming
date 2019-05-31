@@ -1,4 +1,4 @@
-package com.medlinker.socketserver;
+package com.jiantao.socketlib.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -8,9 +8,10 @@ import java.net.Socket;
 public class ServerSocketHelper {
 
     public static void main(String[] args) {
-        startServive("127.0.0.1");
+        startServive("192.168.137.55");
     }
 
+    static SocketHandler socketHandler;
     public static void startServive(String hostName) {
         ServerSocket serverSocket = null;
         try {
@@ -31,12 +32,20 @@ public class ServerSocketHelper {
             Socket socket = null;
             try {
                 System.out.println(" serverSocket waiting accept ...");
-                socket = serverSocket.accept();                        //主线程获取客户端连接
-                Thread workThread = new Thread(new SocketHandler(socket));    //创建线程
+                socket = serverSocket.accept();
+                socketHandler = new SocketHandler(socket);
+                Thread workThread = new Thread(socketHandler);    //创建线程
                 workThread.start();                                    //启动线程
             } catch (Exception e) {
                 e.printStackTrace();
+                break;
             }
+        }
+    }
+
+    public static void closeLastHandler(){
+        if (socketHandler != null) {
+            socketHandler.close();
         }
     }
 }

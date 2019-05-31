@@ -6,41 +6,71 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jiantao.socketlib.client.SocketHelper;
+import com.jiantao.socketlib.server.ServerSocketHelper;
 import com.medlinker.socketclient.ImManager;
-import com.medlinker.socketserver.ServerSocketHelper;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textView;
-    EditText hostName, port;
+  TextView textView;
+  EditText hostName, port;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        textView = (TextView) findViewById(R.id.textview);
-        hostName = (EditText) findViewById(R.id.host_name);
-        port = (EditText) findViewById(R.id.port);
+  SocketHelper socketHelper;
 
-        findViewById(R.id.client_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String host = hostName.getText().toString();
-                int ePort = Integer.parseInt(port.getText().toString());
-                ImManager.init(getApplicationContext(), 0, host, ePort);
-            }
-        });
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    textView = (TextView) findViewById(R.id.textview);
+    hostName = (EditText) findViewById(R.id.host_name);
+    port = (EditText) findViewById(R.id.port);
 
-        findViewById(R.id.server_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ServerSocketHelper.startServive(hostName.getText().toString());
-                    }
-                }).start();
-            }
-        });
+    findViewById(R.id.client_btn)
+        .setOnClickListener(
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                new Thread(
+                    new Runnable() {
+                      @Override
+                      public void run() {
+                        String host = hostName.getText().toString();
+                        int ePort =
+                            Integer.parseInt(
+                                port.getText().toString());
+                        socketHelper = new SocketHelper();
+                        socketHelper.connectServer(host, ePort);
+                      }
+                    })
+                    .start();
+              }
+            });
+
+    findViewById(R.id.server_btn)
+        .setOnClickListener(
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                new Thread(
+                    new Runnable() {
+                      @Override
+                      public void run() {
+                        ServerSocketHelper.startServive(
+                            hostName.getText().toString());
+                      }
+                    })
+                    .start();
+              }
+            });
+  }
+
+  @Override
+  protected void onDestroy() {
+    if (socketHelper != null) {
+      socketHelper.close();
     }
+
+    ServerSocketHelper.closeLastHandler();
+    super.onDestroy();
+  }
 }

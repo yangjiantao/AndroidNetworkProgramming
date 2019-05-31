@@ -1,4 +1,4 @@
-package com.medlinker.socketserver;
+package com.jiantao.socketlib.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -23,7 +23,7 @@ class SocketHandler implements Runnable{
     public void run(){
         try{
             System.out.println("新连接:"+socket.getInetAddress()+":"+socket.getPort());
-            Thread.sleep(5000);
+            //Thread.sleep(5000);
             startHeartbeat();
             receiveMessage(socket.getInputStream());
 
@@ -99,5 +99,15 @@ class SocketHandler implements Runnable{
 
     private boolean isConnected() {
         return socket != null && socket.isConnected() && !socket.isClosed();
+    }
+
+    public void close(){
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

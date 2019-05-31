@@ -1,21 +1,10 @@
 ## android socket client 实现
 
 
-### 目录
-
-**目录 (Table of Contents)**
-
-[TOCM]
-
-[TOC]
-
-
-### h1
 
 前段时间公司项目有个大版本准备对IM（消息通信）模块升级。虽然需求紧急但server同事任坚持自定义消息协议来实现一套通信框架。这里对Android端实现做下总结，仅供交流。
 
 
-### h3
 
 <h3 id="socket_intro">socket 简介</h3>
 >socket就是我们常说的套接字。网络上具有唯一标识的IP地址和端口组合在一起才能构成唯一能识别的标识符套接字。根据不同的的底层协议，Socket的实现是多样化的。常见的Socket类型为流套接字（streamsocket）和数据报套接字(datagramsocket)；数据报套接字使用UDP协议，提供数据打包发送服务。流套接字将TCP作为其端对端协议，提供了一个可信赖的字节流服务。
